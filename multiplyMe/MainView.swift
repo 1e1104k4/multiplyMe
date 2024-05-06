@@ -8,20 +8,24 @@
 import SwiftUI
 
 struct MainView: View {
+    @State private var isSettingSheet = false
     @State private var selectedMutiplicand = 2
     @State private var amountOfRounds = 10
     
     var body: some View {
-        Form {
-            Picker("Practice Numbers Up To: \(selectedMutiplicand)", selection: $selectedMutiplicand) {
-                ForEach(2..<15) {
-                    Text("\($0)").tag($0)
+        NavigationStack {
+            Form {
+                NavigationLink(destination: GameView(selectedMutiplicand: selectedMutiplicand, amountOfRounds: amountOfRounds)) {
+                    Text("Start Game")
+                }
+                Button("Settings") {
+                    isSettingSheet.toggle()
                 }
             }
-            Stepper("Amount of Rounds: \(amountOfRounds)", value: $amountOfRounds, in: 5...20, step: 5)
-            NavigationLink(destination: GameView(selectedMutiplicand: selectedMutiplicand, amountOfRounds: amountOfRounds)) {
-                Text("Start Game")
+            .sheet(isPresented: $isSettingSheet) {
+                SettingView(selectedMutiplicand: $selectedMutiplicand, amountOfRounds: $amountOfRounds)
             }
+            .navigationTitle("MultiplyMe")
         }
     }
 }
