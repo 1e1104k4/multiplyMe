@@ -55,8 +55,15 @@ struct GameView: View {
         let correctAnswer = i * j
         let incorrectFirst = correctAnswer + i
         let incorrectSecond = correctAnswer - i
-        let incorrectThird = correctAnswer + j
-        let incorrectForth = correctAnswer - j
+        let incorrectThird: Int
+        let incorrectForth: Int
+        if i == j {
+            incorrectThird = incorrectFirst + j
+            incorrectForth = incorrectSecond - j
+        } else {
+            incorrectThird = correctAnswer + j
+            incorrectForth = correctAnswer - j
+        }
         answers.append(String(correctAnswer))
         answers.append(String(incorrectFirst))
         answers.append(String(incorrectSecond))
