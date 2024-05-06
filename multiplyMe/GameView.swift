@@ -22,21 +22,29 @@ struct GameView: View {
     @State private var score = 0
     
     var body: some View {
-        Form {
-            if questions.isEmpty == false && questionNumber < questions.count {
-                Text(questions[questionNumber].text)
-                ForEach(0..<questions[questionNumber].answers.count, id: \.self) { index in
-                    Button {
-                        checkAnswer(index)
-                    } label: {
-                        Text(questions[questionNumber].answers[index])
+        NavigationStack {
+            Form {
+                if questions.isEmpty == false && questionNumber < questions.count {
+                    Text(questions[questionNumber].text)
+                    ForEach(0..<questions[questionNumber].answers.count, id: \.self) { index in
+                        Button {
+                            checkAnswer(index)
+                        } label: {
+                            Text(questions[questionNumber].answers[index])
+                        }
                     }
                 }
+                
+                Text("Score: \(score)/\(amountOfRounds)")
             }
-            
-            Text("Score: \(score)")
+            .navigationTitle("MultiplyMe")
+            .toolbar {
+                Button("Restart") {
+                    startGame()
+                }
+            }
+            .onAppear(perform: startGame)
         }
-        .onAppear(perform: startGame)
     }
     
     func generateQuestion() {
